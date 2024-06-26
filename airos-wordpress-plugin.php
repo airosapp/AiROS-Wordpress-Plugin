@@ -47,7 +47,7 @@ function register_yoast_seo_meta_fields() {
     ));
     register_post_meta('post', '_yoast_wpseo_metadesc', array(
         'show_in_rest' => true,
-        'single' include 'single' => true,
+        'single' => true,
         'type' => 'string',
     ));
     error_log('Yoast SEO meta fields registered.');
@@ -130,7 +130,8 @@ function airos_enqueue_live_chat_scripts() {
 }
 
 // Create live-chat-styles.css file
-$live_chat_styles = <<<EOT
+function create_live_chat_styles() {
+    $live_chat_styles = <<<EOT
 #airos-live-chat-button {
     position: fixed;
     bottom: 20px;
@@ -155,5 +156,15 @@ $live_chat_styles = <<<EOT
     border-radius: 5px;
     background-color: white;
     z-index: 1000;
-    box-shadow: 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#airos-live-chat-modal iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+EOT;
+
+    file_put_contents(plugin_dir_path(__FILE__) .
 
