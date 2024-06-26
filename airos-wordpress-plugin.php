@@ -47,7 +47,7 @@ function register_yoast_seo_meta_fields() {
     ));
     register_post_meta('post', '_yoast_wpseo_metadesc', array(
         'show_in_rest' => true,
-        'single' => true,
+        'single' include 'single' => true,
         'type' => 'string',
     ));
     error_log('Yoast SEO meta fields registered.');
@@ -94,8 +94,7 @@ function airos_settings_init() {
 }
 
 function airos_settings_section_callback() { 
-    echo __('AiROS is changing the way you bring your marketing to life.
-	In this release we have ne post SEO functionality.', 'wordpress');
+    echo __('This section description', 'wordpress');
 }
 
 function airos_options_page() { 
@@ -123,31 +122,38 @@ function airos_options_page() {
     <?php
 }
 
-// Enqueue admin scripts for tab functionality
-add_action('admin_enqueue_scripts', 'airos_enqueue_admin_scripts');
-function airos_enqueue_admin_scripts($hook) {
-    if ($hook != 'toplevel_page_airos_app') {
-        return;
-    }
-    wp_enqueue_script('jquery');
-    wp_enqueue_script('airos_admin_script', plugin_dir_url(__FILE__) . 'admin-script.js', array('jquery'), null, true);
+// Enqueue admin scripts and styles for the live chat button and modal
+add_action('wp_enqueue_scripts', 'airos_enqueue_live_chat_scripts');
+function airos_enqueue_live_chat_scripts() {
+    wp_enqueue_style('airos_live_chat_styles', plugin_dir_url(__FILE__) . 'live-chat-styles.css');
+    wp_enqueue_script('airos_live_chat_script', plugin_dir_url(__FILE__) . 'live-chat-script.js', array('jquery'), null, true);
 }
 
-// Create admin-script.js file
-$admin_script = <<<EOT
-jQuery(document).ready(function($) {
-    $('.nav-tab').click(function(e) {
-        e.preventDefault();
-        $('.nav-tab').removeClass('nav-tab-active');
-        $(this).addClass('nav-tab-active');
+// Create live-chat-styles.css file
+$live_chat_styles = <<<EOT
+#airos-live-chat-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 15px;
+    cursor: pointer;
+    z-index: 1000;
+}
 
-        $('.tab-content').hide();
-        var selected_tab = $(this).attr('href');
-        $(selected_tab).show();
-    });
-});
-EOT;
+#airos-live-chat-modal {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 300px;
+    height: 400px;
+    border: 1px solid #0073aa;
+    border-radius: 5px;
+    background-color: white;
+    z-index: 1000;
+    box-shadow: 
 
-file_put_contents(plugin_dir_path(__FILE__) . 'admin-script.js', $admin_script);
-
-?>
