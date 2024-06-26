@@ -54,8 +54,6 @@ function register_yoast_seo_meta_fields() {
 }
 add_action('rest_api_init', 'register_yoast_seo_meta_fields');
 
-error_log('AiROS App plugin setup completed.');
-
 // Function to manually check for updates
 function manual_check_for_updates() {
     global $updateChecker;
@@ -75,3 +73,81 @@ add_filter('puc_manual_check_result-airos-wordpress-plugin', function($update, $
 }, 10, 2);
 
 error_log('Manual check for updates function added.');
+
+// Add the admin menu and settings page
+add_action('admin_menu', 'airos_add_admin_menu');
+add_action('admin_init', 'airos_settings_init');
+
+function airos_add_admin_menu() { 
+    add_menu_page('AiROS App', 'AiROS App', 'manage_options', 'airos_app', 'airos_options_page');
+}
+
+function airos_settings_init() { 
+    register_setting('airosApp', 'airos_settings');
+
+    add_settings_section(
+        'airos_section', 
+        __('Settings for AiROS App', 'wordpress'), 
+        'airos_settings_section_callback', 
+        'airosApp'
+    );
+}
+
+function airos_settings_section_callback() { 
+    echo __('AiROS is changing the way you bring your marketing to life.
+	In this release we have ne post SEO functionality.', 'wordpress');
+}
+
+function airos_options_page() { 
+    ?>
+    <div class="wrap">
+        <h2>AiROS App</h2>
+        <h2 class="nav-tab-wrapper">
+            <a href="#general" class="nav-tab nav-tab-active">General Information</a>
+            <a href="#livechat" class="nav-tab">Live Chat</a>
+        </h2>
+        <div id="general" class="tab-content" style="display: block;">
+            <form action='options.php' method='post'>
+                <?php
+                settings_fields('airosApp');
+                do_settings_sections('airosApp');
+                submit_button();
+                ?>
+            </form>
+        </div>
+        <div id="livechat" class="tab-content" style="display: none;">
+            <h3>Live Chat</h3>
+            <p>This section will contain the live chat settings.</p>
+        </div>
+    </div>
+    <?php
+}
+
+// Enqueue admin scripts for tab functionality
+add_action('admin_enqueue_scripts', 'airos_enqueue_admin_scripts');
+function airos_enqueue_admin_scripts($hook) {
+    if ($hook != 'toplevel_page_airos_app') {
+        return;
+    }
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('airos_admin_script', plugin_dir_url(__FILE__) . 'admin-script.js', array('jquery'), null, true);
+}
+
+// Create admin-script.js file
+$admin_script = <<<EOT
+jQuery(document).ready(function($) {
+    $('.nav-tab').click(function(e) {
+        e.preventDefault();
+        $('.nav-tab').removeClass('nav-tab-active');
+        $(this).addClass('nav-tab-active');
+
+        $('.tab-content').hide();
+        var selected_tab = $(this).attr('href');
+        $(selected_tab).show();
+    });
+});
+EOT;
+
+file_put_contents(plugin_dir_path(__FILE__) . 'admin-script.js', $admin_script);
+
+?>
