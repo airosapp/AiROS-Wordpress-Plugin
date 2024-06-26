@@ -2,7 +2,7 @@
 /*
 Plugin Name: AiROS App
 Description: Allow all features of the AiROS App
-Version: 1.1.2
+Version: 1.1.3
 Author: AiROS
 */
 
@@ -82,18 +82,48 @@ function airos_add_admin_menu() {
     add_menu_page('AiROS App', 'AiROS App', 'manage_options', 'airos_app', 'airos_options_page');
 }
 
-function airos_settings_init() { 
+function airos_settings_init() {
     register_setting('airosApp', 'airos_settings');
 
     add_settings_section(
-        'airos_section', 
-        __('Settings for AiROS App', 'wordpress'), 
-        'airos_settings_section_callback', 
+        'airos_section',
+        __('Settings for AiROS App', 'wordpress'),
+        'airos_settings_section_callback',
         'airosApp'
+    );
+
+    add_settings_field(
+        'airos_live_chat_enabled',
+        __('Enable Live Chat', 'wordpress'),
+        'airos_live_chat_enabled_render',
+        'airosApp',
+        'airos_section'
+    );
+
+    add_settings_field(
+        'airos_live_chat_url',
+        __('Live Chat URL', 'wordpress'),
+        'airos_live_chat_url_render',
+        'airosApp',
+        'airos_section'
     );
 }
 
-function airos_settings_section_callback() { 
+function airos_live_chat_enabled_render() {
+    $options = get_option('airos_settings');
+    ?>
+    <input type='checkbox' name='airos_settings[airos_live_chat_enabled]' <?php checked($options['airos_live_chat_enabled'], 1); ?> value='1'>
+    <?php
+}
+
+function airos_live_chat_url_render() {
+    $options = get_option('airos_settings');
+    ?>
+    <input type='text' name='airos_settings[airos_live_chat_url]' value='<?php echo isset($options['airos_live_chat_url']) ? $options['airos_live_chat_url'] : ''; ?>' placeholder='https://your-live-chat-url.com'>
+    <?php
+}
+
+function airos_settings_section_callback() {
     echo __('This section description', 'wordpress');
 }
 
@@ -116,7 +146,13 @@ function airos_options_page() {
         </div>
         <div id="livechat" class="tab-content" style="display: none;">
             <h3>Live Chat</h3>
-            <p>This section will contain the live chat settings.</p>
+            <form action='options.php' method='post'>
+                <?php
+                settings_fields('airosApp');
+                do_settings_sections('airosApp');
+                submit_button('Save Changes', 'primary', 'submit', true);
+                ?>
+            </form>
         </div>
     </div>
     <?php
@@ -131,11 +167,23 @@ function airos_enqueue_live_chat_scripts() {
 
 // Add HTML for the Floating Button and Modal
 function airos_live_chat_button() {
-    ?>
-    <button id="airos-live-chat-button">Chat</button>
-    <div id="airos-live-chat-modal">
-        <iframe src="https://your-bubble-app-live-chat-iframe-url"></iframe>
-    </div>
-    <?php
+    $options = get_option('airos_settings');
+    if (isset($options['airos_live_chat_enabled']) && $options['airos_live_chat_enabled'] == 1) {
+        $liveChatUrl = isset($options['airos_live_chat_url']) ? $options['airos_live_chat_url'] : '';
+
+        if ($liveChatUrl) {
+            ?>
+            <button id="airos-live-chat-button">Chat</button>
+            <div id="airos-live-chat-modal">
+                <iframe src="<?php echo esc_url($liveChatUrl); ?>"></iframe>
+            </div>
+            <?php
+        } else {
+            error_log('Live Chat URL is not set.');
+        }
+    } else {
+        error_log('Live chat is disabled.');
+    }
 }
 add_action('wp_footer', 'airos_live_chat_button');
+?>
