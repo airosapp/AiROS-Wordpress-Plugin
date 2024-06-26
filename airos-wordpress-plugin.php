@@ -125,46 +125,17 @@ function airos_options_page() {
 // Enqueue admin scripts and styles for the live chat button and modal
 add_action('wp_enqueue_scripts', 'airos_enqueue_live_chat_scripts');
 function airos_enqueue_live_chat_scripts() {
-    wp_enqueue_style('airos_live_chat_styles', plugin_dir_url(__FILE__) . 'live-chat-styles.css');
-    wp_enqueue_script('airos_live_chat_script', plugin_dir_url(__FILE__) . 'live-chat-script.js', array('jquery'), null, true);
+    wp_enqueue_style('airos_live_chat_styles', plugin_dir_url(__FILE__) . 'assets/css/live-chat-styles.css');
+    wp_enqueue_script('airos_live_chat_script', plugin_dir_url(__FILE__) . 'assets/js/live-chat-script.js', array('jquery'), null, true);
 }
 
-// Create live-chat-styles.css file
-function create_live_chat_styles() {
-    $live_chat_styles = <<<EOT
-#airos-live-chat-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #0073aa;
-    color: white;
-    border: none;
-    border-radius: 50%;
-    padding: 15px;
-    cursor: pointer;
-    z-index: 1000;
+// Add HTML for the Floating Button and Modal
+function airos_live_chat_button() {
+    ?>
+    <button id="airos-live-chat-button">Chat</button>
+    <div id="airos-live-chat-modal">
+        <iframe src="https://your-bubble-app-live-chat-iframe-url"></iframe>
+    </div>
+    <?php
 }
-
-#airos-live-chat-modal {
-    display: none;
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    width: 300px;
-    height: 400px;
-    border: 1px solid #0073aa;
-    border-radius: 5px;
-    background-color: white;
-    z-index: 1000;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-#airos-live-chat-modal iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-EOT;
-
-    file_put_contents(plugin_dir_path(__FILE__) .
-
+add_action('wp_footer', 'airos_live_chat_button');
