@@ -112,14 +112,14 @@ function airos_settings_init() {
 function airos_live_chat_enabled_render() {
     $options = get_option('airos_settings');
     ?>
-    <input type='checkbox' name='airos_settings[airos_live_chat_enabled]' <?php checked($options['airos_live_chat_enabled'], 1); ?> value='1'>
+    <input type='checkbox' name='airos_settings[airos_live_chat_enabled]' <?php checked(isset($options['airos_live_chat_enabled']) ? $options['airos_live_chat_enabled'] : 0, 1); ?> value='1'>
     <?php
 }
 
 function airos_live_chat_url_render() {
     $options = get_option('airos_settings');
     ?>
-    <input type='text' name='airos_settings[airos_live_chat_url]' value='<?php echo isset($options['airos_live_chat_url']) ? $options['airos_live_chat_url'] : ''; ?>' placeholder='https://your-live-chat-url.com'>
+    <input type='text' name='airos_settings[airos_live_chat_url]' value='<?php echo isset($options['airos_live_chat_url']) ? esc_attr($options['airos_live_chat_url']) : ''; ?>' placeholder='https://your-live-chat-url.com'>
     <?php
 }
 
@@ -186,4 +186,11 @@ function airos_live_chat_button() {
     }
 }
 add_action('wp_footer', 'airos_live_chat_button');
+
+// Include script to toggle tabs in admin settings page
+add_action('admin_enqueue_scripts', 'airos_admin_scripts');
+function airos_admin_scripts() {
+    wp_enqueue_script('airos_admin_script', plugin_dir_url(__FILE__) . 'assets/js/admin-script.js', array('jquery'), null, true);
+}
+
 ?>
