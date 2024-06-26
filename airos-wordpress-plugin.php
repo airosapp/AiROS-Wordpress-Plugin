@@ -23,12 +23,21 @@ if (file_exists(plugin_dir_path(__FILE__) . 'includes/plugin-update-checker/plug
 
 // Use the correct namespace and class for PUC 5.4
 if (class_exists('YahnisElsts\\PluginUpdateChecker\\v5p4\\PucFactory')) {
-    // Set up the update checker
+    // Set up the update checker with authentication
+    $options = get_option('airos_settings');
+    $githubToken = isset($options['airos_github_token']) ? $options['airos_github_token'] : '';
+
     $updateChecker = YahnisElsts\PluginUpdateChecker\v5p4\PucFactory::buildUpdateChecker(
         'https://github.com/airosapp/AiROS-Wordpress-Plugin', // URL of the repository
         __FILE__, // Full path to the main plugin file
         'airos-wordpress-plugin' // Plugin slug
     );
+
+    if ($githubToken) {
+        $updateChecker->setAuthentication($githubToken);
+        error_log('GitHub token set for update checker.');
+    }
+
     error_log('Update checker set up successfully.');
 
     // Optional: Set the branch that contains the stable release
@@ -107,6 +116,14 @@ function airos_settings_init() {
         'airosApp',
         'airos_section'
     );
+
+    add_settings_field(
+        'airos_github_token',
+        __('GitHub API Token', 'wordpress'),
+        'airos_github_token_render',
+        'airosApp',
+        'airos_section'
+    );
 }
 
 function airos_live_chat_enabled_render() {
@@ -120,6 +137,13 @@ function airos_live_chat_url_render() {
     $options = get_option('airos_settings');
     ?>
     <input type='text' name='airos_settings[airos_live_chat_url]' value='<?php echo isset($options['airos_live_chat_url']) ? esc_attr($options['airos_live_chat_url']) : ''; ?>' placeholder='https://your-live-chat-url.com'>
+    <?php
+}
+
+function airos_github_token_render() {
+    $options = get_option('airos_settings');
+    ?>
+    <input type='text' name='airos_settings[airos_github_token]' value='<?php echo isset($options['airos_github_token']) ? esc_attr($options['airos_github_token']) : ''; ?>' placeholder='GitHub API Token'>
     <?php
 }
 
@@ -175,7 +199,7 @@ function airos_live_chat_button() {
             ?>
             <button id="airos-live-chat-button">Chat</button>
             <div id="airos-live-chat-modal">
-                <iframe src="<?php echo esc_url($liveChatUrl); ?>"></iframe>
+                <iframe src="<?php echo esc_url($liveChatUrl); ?>" width="500" height="500" allow="camera; microphone; autoplay"></iframe>
             </div>
             <?php
         } else {
@@ -192,5 +216,4 @@ add_action('admin_enqueue_scripts', 'airos_admin_scripts');
 function airos_admin_scripts() {
     wp_enqueue_script('airos_admin_script', plugin_dir_url(__FILE__) . 'assets/js/admin-script.js', array('jquery'), null, true);
 }
-
 ?>
