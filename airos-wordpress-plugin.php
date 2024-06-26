@@ -2,7 +2,7 @@
 /*
 Plugin Name: AiROS App
 Description: Allow all features of the AiROS App
-Version: 1.1.3
+Version: 1.1.5
 Author: AiROS
 */
 
