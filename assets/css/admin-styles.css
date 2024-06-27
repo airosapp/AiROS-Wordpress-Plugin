@@ -1,0 +1,36 @@
+/* Admin panel styles */
+.wrap {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.wrap img {
+    display: block;
+    margin: 0 auto 20px;
+}
+
+.nav-tab-wrapper {
+    margin-bottom: 20px;
+}
+
+.tab-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+input[type="checkbox"] {
+    transform: scale(1.5);
+    margin-right: 10px;
+}
+
+input[type="text"] {
+    background: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
