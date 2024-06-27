@@ -2,7 +2,7 @@
 /*
 Plugin Name: AiROS App
 Description: Allow all features of the AiROS App
-Version: 1.2.1
+Version: 1.1.7
 Author: AiROS
 */
 
@@ -64,35 +64,19 @@ function airos_add_admin_menu() {
 function airos_settings_init() {
     register_setting('airosApp', 'airos_settings');
 
-    // General Information Section
+    // General Section
     add_settings_section(
-        'airos_section',
-        __('Settings for AiROS App', 'wordpress'),
-        'airos_settings_section_callback',
+        'airos_section_general',
+        __('General Information', 'wordpress'),
+        'airos_settings_section_callback_general',
         'airosApp'
-    );
-
-    add_settings_field(
-        'airos_description',
-        __('App Description', 'wordpress'),
-        'airos_description_render',
-        'airosApp',
-        'airos_section'
-    );
-
-    add_settings_field(
-        'airos_github_token',
-        __('GitHub API Token', 'wordpress'),
-        'airos_github_token_render',
-        'airosApp',
-        'airos_section'
     );
 
     // Live Chat Section
     add_settings_section(
         'airos_section_live_chat',
         __('Live Chat Settings', 'wordpress'),
-        'airos_settings_section_callback',
+        'airos_settings_section_callback_live_chat',
         'airosApp'
     );
 
@@ -111,13 +95,30 @@ function airos_settings_init() {
         'airosApp',
         'airos_section_live_chat'
     );
+
+    add_settings_field(
+        'airos_live_chat_color',
+        __('Live Chat Button Color', 'wordpress'),
+        'airos_live_chat_color_render',
+        'airosApp',
+        'airos_section_live_chat'
+    );
+
+    add_settings_field(
+        'airos_live_chat_text',
+        __('Live Chat Button Text', 'wordpress'),
+        'airos_live_chat_text_render',
+        'airosApp',
+        'airos_section_live_chat'
+    );
 }
 
-function airos_description_render() {
-    $options = get_option('airos_settings');
-    ?>
-    <textarea name='airos_settings[airos_description]' rows='5' style='width: 100%; background: white;'><?php echo isset($options['airos_description']) ? esc_attr($options['airos_description']) : ''; ?></textarea>
-    <?php
+function airos_settings_section_callback_general() {
+    echo __('General settings for the AiROS App.', 'wordpress');
+}
+
+function airos_settings_section_callback_live_chat() {
+    echo __('Settings for the Live Chat feature.', 'wordpress');
 }
 
 function airos_live_chat_enabled_render() {
@@ -134,22 +135,25 @@ function airos_live_chat_url_render() {
     <?php
 }
 
-function airos_github_token_render() {
+function airos_live_chat_color_render() {
     $options = get_option('airos_settings');
     ?>
-    <input type='text' name='airos_settings[airos_github_token]' value='<?php echo isset($options['airos_github_token']) ? esc_attr($options['airos_github_token']) : ''; ?>' placeholder='GitHub API Token' style='background: white;'>
+    <input type='color' name='airos_settings[airos_live_chat_color]' value='<?php echo isset($options['airos_live_chat_color']) ? esc_attr($options['airos_live_chat_color']) : '#000000'; ?>' style='background: white;'>
     <?php
 }
 
-function airos_settings_section_callback() {
-    echo __('This section description', 'wordpress');
+function airos_live_chat_text_render() {
+    $options = get_option('airos_settings');
+    ?>
+    <input type='text' name='airos_settings[airos_live_chat_text]' value='<?php echo isset($options['airos_live_chat_text']) ? esc_attr($options['airos_live_chat_text']) : 'Chat'; ?>' placeholder='Chat' style='background: white;'>
+    <?php
 }
 
 function airos_options_page() { 
     ?>
-    <div class="wrap">
+    <div class="wrap airos-wrap">
         <div class="airos-admin-header">
-            <img src="<?php echo plugin_dir_url(__FILE__) . 'assets/images/logo.png'; ?>" alt="AiROS Logo" class="airos-logo">
+            <img src="https://airosapp.com/wp-content/uploads/2024/03/AiROS-Logo-copy.png" alt="AiROS Logo" class="airos-logo">
             <h2>AiROS App</h2>
         </div>
         <div class="airos-admin-content">
@@ -162,20 +166,78 @@ function airos_options_page() {
             </form>
         </div>
     </div>
+
+    <style>
+    /* Admin panel styles */
+    .wrap {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        max-width: 800px;
+        margin: 20px auto;
+    }
+
+    .airos-admin-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .airos-logo {
+        max-width: 100px;
+        height: auto;
+    }
+
+    .airos-admin-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    input[type="checkbox"] {
+        transform: scale(1.5);
+        margin-right: 10px;
+    }
+
+    input[type="color"] {
+        background: white;
+        padding: 5px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 40px;
+		height: 40px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+		
+		input[type="text"], textarea {
+        background: white;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 100%;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+		
+    </style>
     <?php
 }
 
-// Enqueue admin scripts and styles for the settings page
+// Enqueue admin scripts for the settings page
 add_action('admin_enqueue_scripts', 'airos_admin_scripts');
 function airos_admin_scripts($hook) {
     if ($hook !== 'toplevel_page_airos_app') {
         return;
     }
-    error_log('Enqueuing admin styles.');
     wp_enqueue_style('airos_admin_styles', plugin_dir_url(__FILE__) . 'assets/css/admin-styles.css');
     wp_enqueue_script('airos_admin_script', plugin_dir_url(__FILE__) . 'assets/js/admin-script.js', array('jquery'), null, true);
 }
 
+// Enqueue front-end scripts for the live chat button and modal
 add_action('wp_enqueue_scripts', 'airos_enqueue_live_chat_scripts');
 function airos_enqueue_live_chat_scripts() {
     wp_enqueue_style('airos_live_chat_styles', plugin_dir_url(__FILE__) . 'assets/css/live-chat-styles.css');
@@ -187,10 +249,12 @@ function airos_live_chat_button() {
     $options = get_option('airos_settings');
     if (isset($options['airos_live_chat_enabled']) && $options['airos_live_chat_enabled'] == 1) {
         $liveChatUrl = isset($options['airos_live_chat_url']) ? $options['airos_live_chat_url'] : '';
+        $liveChatColor = isset($options['airos_live_chat_color']) ? $options['airos_live_chat_color'] : '#000000';
+        $liveChatText = isset($options['airos_live_chat_text']) ? $options['airos_live_chat_text'] : 'Chat';
 
         if ($liveChatUrl) {
             ?>
-            <button id="airos-live-chat-button">Chat</button>
+            <button id="airos-live-chat-button" style="background-color: <?php echo esc_attr($liveChatColor); ?>;"><?php echo esc_html($liveChatText); ?></button>
             <div id="airos-live-chat-modal">
                 <iframe src="<?php echo esc_url($liveChatUrl); ?>" width="500" height="500" allow="camera; microphone; autoplay"></iframe>
             </div>
@@ -199,4 +263,3 @@ function airos_live_chat_button() {
     }
 }
 add_action('wp_footer', 'airos_live_chat_button');
-?>
