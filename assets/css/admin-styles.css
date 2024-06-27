@@ -1,36 +1,43 @@
 /* Admin panel styles */
 .wrap {
-    background: #f9f9f9;
+    background: #000;
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    max-width: 800px;
+    margin: 20px auto;
 }
 
-.wrap img {
-    display: block;
-    margin: 0 auto 20px;
-}
-
-.nav-tab-wrapper {
+.airos-admin-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: 20px;
 }
 
-.tab-content {
-    background: white;
+.airos-logo {
+    max-width: 100px;
+    height: auto;
+}
+
+.airos-admin-content {
+    background: black;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 input[type="checkbox"] {
-    transform: scale(1.5);
+    transform: scale(2.5);
     margin-right: 10px;
 }
 
-input[type="text"] {
+input[type="text"], textarea {
     background: white;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 100%;
     box-sizing: border-box;
+    margin-bottom: 20px;
 }
