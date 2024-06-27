@@ -1,12 +1,16 @@
+// JavaScript to handle the live chat button click
 jQuery(document).ready(function($) {
-    $('#airos-live-chat-button').on('click', function() {
-        $('#airos-live-chat-modal').toggle();
-    });
+    $('#airos-live-chat-button').click(function() {
+        var $modal = $('#airos-live-chat-modal');
+        var $button = $(this);
 
-    // Hide the chat modal when clicking outside of it
-    $(document).on('click', function(e) {
-        if (!$(e.target).closest('#airos-live-chat-modal, #airos-live-chat-button').length) {
-            $('#airos-live-chat-modal').hide();
+        $modal.toggleClass('open');
+        $button.toggleClass('active');
+
+        if ($modal.hasClass('open')) {
+            $button.text('X'); // Change button text to 'X' when open
+        } else {
+            $button.text('Chat'); // Change button text back to 'Chat' when closed
         }
     });
 });
