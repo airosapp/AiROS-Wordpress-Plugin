@@ -129,21 +129,21 @@ function airos_settings_init() {
 function airos_live_chat_enabled_render() {
     $options = get_option('airos_settings');
     ?>
-    <input type='checkbox' name='airos_settings[airos_live_chat_enabled]' <?php checked(isset($options['airos_live_chat_enabled']) ? $options['airos_live_chat_enabled'] : 0, 1); ?> value='1'>
+    <input type='checkbox' style='transform: scale(1.5);' name='airos_settings[airos_live_chat_enabled]' <?php checked(isset($options['airos_live_chat_enabled']) ? $options['airos_live_chat_enabled'] : 0, 1); ?> value='1'>
     <?php
 }
 
 function airos_live_chat_url_render() {
     $options = get_option('airos_settings');
     ?>
-    <input type='text' name='airos_settings[airos_live_chat_url]' value='<?php echo isset($options['airos_live_chat_url']) ? esc_attr($options['airos_live_chat_url']) : ''; ?>' placeholder='https://your-live-chat-url.com'>
+    <input type='text' name='airos_settings[airos_live_chat_url]' value='<?php echo isset($options['airos_live_chat_url']) ? esc_attr($options['airos_live_chat_url']) : ''; ?>' placeholder='https://your-live-chat-url.com' style='background: white;'>
     <?php
 }
 
 function airos_github_token_render() {
     $options = get_option('airos_settings');
     ?>
-    <input type='text' name='airos_settings[airos_github_token]' value='<?php echo isset($options['airos_github_token']) ? esc_attr($options['airos_github_token']) : ''; ?>' placeholder='GitHub API Token'>
+    <input type='text' name='airos_settings[airos_github_token]' value='<?php echo isset($options['airos_github_token']) ? esc_attr($options['airos_github_token']) : ''; ?>' placeholder='GitHub API Token' style='background: white;'>
     <?php
 }
 
@@ -154,6 +154,7 @@ function airos_settings_section_callback() {
 function airos_options_page() { 
     ?>
     <div class="wrap">
+        <img src="<?php echo plugin_dir_url(__FILE__) . 'assets/images/logo.png'; ?>" alt="AiROS Logo" style="max-width: 100px; margin-bottom: 20px;">
         <h2>AiROS App</h2>
         <h2 class="nav-tab-wrapper">
             <a href="#general" class="nav-tab nav-tab-active">General Information</a>
@@ -214,6 +215,7 @@ add_action('wp_footer', 'airos_live_chat_button');
 // Include script to toggle tabs in admin settings page
 add_action('admin_enqueue_scripts', 'airos_admin_scripts');
 function airos_admin_scripts() {
+    wp_enqueue_style('airos_admin_styles', plugin_dir_url(__FILE__) . 'assets/css/admin-styles.css');
     wp_enqueue_script('airos_admin_script', plugin_dir_url(__FILE__) . 'assets/js/admin-script.js', array('jquery'), null, true);
 }
 ?>
