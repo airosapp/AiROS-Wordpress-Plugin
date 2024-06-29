@@ -2,7 +2,7 @@
 /*
 Plugin Name: AiROS App
 Description: Allow all features of the AiROS App
-Version: 1.2.2
+Version: 1.2.1
 Author: AiROS
 */
 
@@ -167,63 +167,6 @@ function airos_options_page() {
         </div>
     </div>
 
-    <style>
-    /* Admin panel styles */
-    .wrap {
-        background: #f9f9f9;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        max-width: 800px;
-        margin: 20px auto;
-    }
-
-    .airos-admin-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    .airos-logo {
-        max-width: 100px;
-        height: auto;
-    }
-
-    .airos-admin-content {
-        background: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    input[type="checkbox"] {
-        transform: scale(1.5);
-        margin-right: 10px;
-    }
-
-    input[type="color"] {
-        background: white;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 40px;
-		height: 40px;
-        box-sizing: border-box;
-        margin-bottom: 20px;
-    }
-		
-		input[type="text"], textarea {
-        background: white;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 100%;
-        box-sizing: border-box;
-        margin-bottom: 20px;
-    }
-		
-    </style>
     <?php
 }
 
@@ -233,16 +176,42 @@ function airos_admin_scripts($hook) {
     if ($hook !== 'toplevel_page_airos_app') {
         return;
     }
-    wp_enqueue_style('airos_admin_styles', plugin_dir_url(__FILE__) . 'assets/css/admin-styles.css');
+
+    // Correct CSS path
+    $css_file_url = plugin_dir_url(__FILE__) . 'assets/css/admin-styles.css';
+    $css_file_path = plugin_dir_path(__FILE__) . 'assets/css/admin-styles.css';
+    $css_version = filemtime($css_file_path);
+
+    wp_register_style('airos_admin_styles', $css_file_url, [], $css_version);
+    wp_enqueue_style('airos_admin_styles');
+
     wp_enqueue_script('airos_admin_script', plugin_dir_url(__FILE__) . 'assets/js/admin-script.js', array('jquery'), null, true);
 }
 
-// Enqueue front-end scripts for the live chat button and modal
-add_action('wp_enqueue_scripts', 'airos_enqueue_live_chat_scripts');
+// Enqueue front-end scripts and styles
 function airos_enqueue_live_chat_scripts() {
-    wp_enqueue_style('airos_live_chat_styles', plugin_dir_url(__FILE__) . 'assets/css/live-chat-styles.css');
+    // Enqueue Bootstrap CSS
+    wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+
+    // Correct CSS path
+    $css_file_url = plugin_dir_url(__FILE__) . 'assets/css/live-chat-styles.css';
+    $css_file_path = plugin_dir_path(__FILE__) . 'assets/css/live-chat-styles.css';
+    $css_version = filemtime($css_file_path);
+
+    wp_register_style('airos_live_chat_styles', $css_file_url, [], $css_version);
+    wp_enqueue_style('airos_live_chat_styles');
+
+    // Make sure jQuery is enqueued
+    wp_enqueue_script('jquery');
+
+    // Enqueue Bootstrap JS with jQuery as a dependency
+    wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array('jquery'), null, true);
+
+    // Enqueue custom live chat script with jQuery as a dependency
     wp_enqueue_script('airos_live_chat_script', plugin_dir_url(__FILE__) . 'assets/js/live-chat-script.js', array('jquery'), null, true);
 }
+add_action('wp_enqueue_scripts', 'airos_enqueue_live_chat_scripts');
+
 
 // Add HTML for the Floating Button and Modal
 function airos_live_chat_button() {
