@@ -9,8 +9,17 @@ jQuery(document).ready(function($) {
 
         if ($modal.hasClass('open')) {
             $button.text('X'); // Change button text to 'X' when open
+            $modal.css({
+                'opacity': '1',
+                'visibility': 'visible'
+            });
         } else {
             $button.text('Chat'); // Change button text back to 'Chat' when closed
+            $modal.css({
+                'opacity': '0',
+                'visibility': 'hidden'
+            });
         }
     });
 });
+
