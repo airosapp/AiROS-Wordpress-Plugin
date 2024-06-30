@@ -103,6 +103,15 @@ function airos_settings_init() {
         'airosApp',
         'airos_section_live_chat'
     );
+	
+	add_settings_field(
+    'airos_live_chat_font_color',
+    __('Live Chat Button Font Color', 'wordpress'),
+    'airos_live_chat_font_color_render',
+    'airosApp',
+    'airos_section_live_chat'
+);
+
 
     add_settings_field(
         'airos_live_chat_text',
@@ -141,6 +150,14 @@ function airos_live_chat_color_render() {
     <input type='color' name='airos_settings[airos_live_chat_color]' value='<?php echo isset($options['airos_live_chat_color']) ? esc_attr($options['airos_live_chat_color']) : '#000000'; ?>' style='background: white;'>
     <?php
 }
+
+function airos_live_chat_font_color_render() {
+    $options = get_option('airos_settings');
+    ?>
+    <input type='color' name='airos_settings[airos_live_chat_font_color]' value='<?php echo isset($options['airos_live_chat_font_color']) ? esc_attr($options['airos_live_chat_font_color']) : '#ffffff'; ?>' style='background: white;'>
+    <?php
+}
+
 
 function airos_live_chat_text_render() {
     $options = get_option('airos_settings');
@@ -202,11 +219,12 @@ function airos_live_chat_button() {
     if (isset($options['airos_live_chat_enabled']) && $options['airos_live_chat_enabled'] == 1) {
         $liveChatUrl = isset($options['airos_live_chat_url']) ? $options['airos_live_chat_url'] : '';
         $liveChatColor = isset($options['airos_live_chat_color']) ? $options['airos_live_chat_color'] : '#000000';
+        $liveChatFontColor = isset($options['airos_live_chat_font_color']) ? $options['airos_live_chat_font_color'] : '#ffffff';
         $liveChatText = isset($options['airos_live_chat_text']) ? $options['airos_live_chat_text'] : 'Chat';
 
         if ($liveChatUrl) {
             ?>
-            <button id="airos-live-chat-button" style="background-color: <?php echo esc_attr($liveChatColor); ?>;"><?php echo esc_html($liveChatText); ?></button>
+            <button id="airos-live-chat-button" style="background-color: <?php echo esc_attr($liveChatColor); ?>; color: <?php echo esc_attr($liveChatFontColor); ?>;"><?php echo esc_html($liveChatText); ?></button>
             <div id="airos-live-chat-modal">
                 <iframe src="<?php echo esc_url($liveChatUrl); ?>" width="500" height="500" allow="camera; microphone; autoplay"></iframe>
             </div>
@@ -214,4 +232,5 @@ function airos_live_chat_button() {
         }
     }
 }
+
 add_action('wp_footer', 'airos_live_chat_button');
