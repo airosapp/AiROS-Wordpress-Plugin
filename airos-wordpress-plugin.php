@@ -191,7 +191,8 @@ function airos_enqueue_live_chat_scripts() {
     wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array('jquery'), null, true);
 
     // Enqueue custom live chat script with jQuery as a dependency
-    wp_enqueue_script('airos_live_chat_script', plugin_dir_url(__FILE__) . 'assets/js/live-chat-script.js', array('jquery'), null, true);
+    wp_register_script('airos_live_chat_script', plugin_dir_url(__FILE__) . 'assets/js/live-chat-script.js', array('jquery'), filemtime(plugin_dir_path(__FILE__) . 'assets/js/live-chat-script.js'), true);
+    wp_enqueue_script('airos_live_chat_script');
 }
 add_action('wp_enqueue_scripts', 'airos_enqueue_live_chat_scripts');
 
