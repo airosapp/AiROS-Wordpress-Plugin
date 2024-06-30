@@ -1,12 +1,13 @@
 #airos-live-chat-button {
     position: fixed;
-    bottom: 20px;
+    bottom: 200px;
     right: 20px;
     background-color: #000;
     color: #fff; /* Default color */
     border: none;
+	outline: none; /* Remove default focus outline */
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
     z-index: 1000;
     transition: background-color 0.3s, color 0.3s, transform 0.3s;
@@ -15,26 +16,31 @@
 
 #airos-live-chat-button.active {
     background-color: #ff0000; /* Change this color to what you prefer for the active state */
+	    outline: none; /* Ensure no focus outline */
 }
 
 #airos-live-chat-modal {
     display: none;
     position: fixed;
-    bottom: 70px;
+    bottom: 400px;
     right: 20px;
     width: 500px;
     height: 500px;
     background: #fff;
-    border: 1px solid #ccc;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     z-index: 1000;
-    transform: translateY(100%);
-    transition: transform 0.3s;
+	transform: translateY(0);
+    transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
+    opacity: 0;
+    visibility: hidden;
 }
 
 #airos-live-chat-modal.open {
     display: block;
     transform: translateY(0);
+	opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out, visibility 0s linear 0s;
 }
 
 #airos-live-chat-modal iframe {
