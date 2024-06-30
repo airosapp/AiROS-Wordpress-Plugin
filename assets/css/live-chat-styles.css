@@ -1,17 +1,17 @@
-/* Styles for the live chat button and modal */
 #airos-live-chat-button {
     position: fixed;
     bottom: 20px;
     right: 20px;
     background-color: #000;
-    color: #fff;
+    color: #fff; /* Default color */
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
     z-index: 1000;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
+
 
 #airos-live-chat-button.active {
     background-color: #ff0000; /* Change this color to what you prefer for the active state */
