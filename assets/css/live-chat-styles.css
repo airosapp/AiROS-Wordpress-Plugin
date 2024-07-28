@@ -1,7 +1,7 @@
 /* General styles for the live chat button */
 #airos-live-chat-button-icon, #airos-live-chat-button-text {
     position: fixed;
-    bottom: 200px;
+    bottom: 20px;
     right: 20px;
     border: none;
     outline: none; /* Remove default focus outline */
@@ -61,7 +61,7 @@
 #airos-live-chat-modal {
     display: none;
     position: fixed;
-    bottom: 400px;
+    bottom: 80px;
     right: 20px;
     width: 500px;
     height: 500px;
