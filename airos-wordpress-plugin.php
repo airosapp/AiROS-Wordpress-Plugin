@@ -165,14 +165,14 @@ function airos_live_chat_enabled_render() {
 function airos_live_chat_icon_width_render() {
     $options = get_option('airos_settings');
     ?>
-    <input type='number' name='airos_settings[airos_live_chat_icon_width]' value='<?php echo isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '20'; ?>' style='background: white; width: 60px;' min='10' max='100'>
+    <input type='number' name='airos_settings[airos_live_chat_icon_width]' value='<?php echo isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '40'; ?>' style='background: white; width: 60px;' min='10' max='100'>
     <?php
 }
 
 function airos_live_chat_icon_height_render() {
     $options = get_option('airos_settings');
     ?>
-    <input type='number' name='airos_settings[airos_live_chat_icon_height]' value='<?php echo isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '20'; ?>' style='background: white; width: 60px;' min='10' max='100'>
+    <input type='number' name='airos_settings[airos_live_chat_icon_height]' value='<?php echo isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '40'; ?>' style='background: white; width: 60px;' min='10' max='100'>
     <?php
 }
 
@@ -272,8 +272,8 @@ function airos_live_chat_button() {
         $liveChatFontColor = isset($options['airos_live_chat_font_color']) ? $options['airos_live_chat_font_color'] : '#ffffff';
         $liveChatButtonType = isset($options['airos_live_chat_button_type']) ? $options['airos_live_chat_button_type'] : 'text';
         $liveChatText = isset($options['airos_live_chat_text']) ? $options['airos_live_chat_text'] : 'Chat';
-        $liveChatIconWidth = isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '20';
-        $liveChatIconHeight = isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '20';
+        $liveChatIconWidth = isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '40';
+        $liveChatIconHeight = isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '40';
         
         if ($liveChatUrl) {
             if ($liveChatButtonType === 'icon') {
