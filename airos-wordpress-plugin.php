@@ -107,7 +107,7 @@ function airos_settings_init() {
     // New fields for icon height and width
     add_settings_field(
         'airos_live_chat_icon_width',
-        __('Live Chat Icon Width (px)', 'wordpress'),
+        __('Icon Button Width (px)', 'wordpress'),
         'airos_live_chat_icon_width_render',
         'airosApp',
         'airos_section_live_chat'
@@ -115,7 +115,7 @@ function airos_settings_init() {
 
     add_settings_field(
         'airos_live_chat_icon_height',
-        __('Live Chat Icon Height (px)', 'wordpress'),
+        __('Icon Button Height (px)', 'wordpress'),
         'airos_live_chat_icon_height_render',
         'airosApp',
         'airos_section_live_chat'
@@ -123,7 +123,7 @@ function airos_settings_init() {
 
     add_settings_field(
         'airos_live_chat_color',
-        __('Live Chat Button Color', 'wordpress'),
+        __('Text Button Color', 'wordpress'),
         'airos_live_chat_color_render',
         'airosApp',
         'airos_section_live_chat'
@@ -131,7 +131,7 @@ function airos_settings_init() {
     
     add_settings_field(
         'airos_live_chat_font_color',
-        __('Live Chat Button Font Color', 'wordpress'),
+        __('Text Button Font Color', 'wordpress'),
         'airos_live_chat_font_color_render',
         'airosApp',
         'airos_section_live_chat'
@@ -139,7 +139,7 @@ function airos_settings_init() {
 
     add_settings_field(
         'airos_live_chat_text',
-        __('Live Chat Button Text', 'wordpress'),
+        __('Text for the Button', 'wordpress'),
         'airos_live_chat_text_render',
         'airosApp',
         'airos_section_live_chat'
