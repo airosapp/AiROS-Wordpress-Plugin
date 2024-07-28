@@ -265,3 +265,4 @@ function airos_live_chat_button() {
     }
 }
 add_action('wp_footer', 'airos_live_chat_button');
+?>
