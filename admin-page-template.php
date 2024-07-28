@@ -1,4 +1,3 @@
-<!-- admin-page-template.php -->
 <div class="wrap airos-wrap">
     <div class="airos-admin-header">
         <h2></h2>
@@ -15,4 +14,3 @@
         </form>
     </div>
 </div>
-
