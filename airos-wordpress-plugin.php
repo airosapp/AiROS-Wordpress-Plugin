@@ -96,6 +96,31 @@ function airos_settings_init() {
         'airos_section_live_chat'
     );
 
+        add_settings_field(
+        'airos_live_chat_button_type',
+        __('Live Chat Button Type', 'wordpress'),
+        'airos_live_chat_button_type_render',
+        'airosApp',
+        'airos_section_live_chat'
+    );
+
+    // New fields for icon height and width
+    add_settings_field(
+        'airos_live_chat_icon_width',
+        __('Live Chat Icon Width (px)', 'wordpress'),
+        'airos_live_chat_icon_width_render',
+        'airosApp',
+        'airos_section_live_chat'
+    );
+
+    add_settings_field(
+        'airos_live_chat_icon_height',
+        __('Live Chat Icon Height (px)', 'wordpress'),
+        'airos_live_chat_icon_height_render',
+        'airosApp',
+        'airos_section_live_chat'
+    );
+
     add_settings_field(
         'airos_live_chat_color',
         __('Live Chat Button Color', 'wordpress'),
@@ -120,30 +145,6 @@ function airos_settings_init() {
         'airos_section_live_chat'
     );
 
-    add_settings_field(
-        'airos_live_chat_button_type',
-        __('Live Chat Button Type', 'wordpress'),
-        'airos_live_chat_button_type_render',
-        'airosApp',
-        'airos_section_live_chat'
-    );
-
-    // New fields for icon height and width
-    add_settings_field(
-        'airos_live_chat_icon_width',
-        __('Live Chat Icon Width (px)', 'wordpress'),
-        'airos_live_chat_icon_width_render',
-        'airosApp',
-        'airos_section_live_chat'
-    );
-
-    add_settings_field(
-        'airos_live_chat_icon_height',
-        __('Live Chat Icon Height (px)', 'wordpress'),
-        'airos_live_chat_icon_height_render',
-        'airosApp',
-        'airos_section_live_chat'
-    );
 }
 
 
