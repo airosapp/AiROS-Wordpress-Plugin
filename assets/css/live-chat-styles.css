@@ -9,6 +9,7 @@
     cursor: pointer;
     z-index: 1000;
     transition: background-color 0.3s, color 0.3s, transform 0.3s;
+	background: transparent;
 }
 
 /* Styles for the text option button */
@@ -24,9 +25,9 @@
 
 /* Styles for the icon option button */
 #airos-live-chat-button-icon .chat-icon {
-    width: 20px;
-    height: 20px;
-    padding: 10px;
+    width: 50px;
+    height: 50px;
+    padding: 0px;
 }
 
 /* Styles for the active state of the text option */
@@ -39,8 +40,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background-color: #000;
     color: #fff;
     border-radius: 50%;
