@@ -144,6 +144,28 @@ function airos_settings_init() {
         'airosApp',
         'airos_section_live_chat'
     );
+	
+	    // Scheduler fields
+    $days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    foreach ($days as $day) {
+        add_settings_field(
+            'airos_live_chat_schedule_' . strtolower($day),
+            __($day . ' Schedule', 'wordpress'),
+            'airos_live_chat_schedule_render',
+            'airosApp',
+            'airos_section_live_chat',
+            ['day' => $day]
+        );
+    }
+
+    // Timezone field
+    add_settings_field(
+        'airos_live_chat_timezone',
+        __('Timezone', 'wordpress'),
+        'airos_live_chat_timezone_render',
+        'airosApp',
+        'airos_section_live_chat'
+    );
 
 }
 
@@ -216,6 +238,52 @@ function airos_live_chat_button_type_render() {
     <?php
 }
 
+function airos_live_chat_schedule_render($args) {
+    $options = get_option('airos_settings');
+    $day = $args['day'];
+    $day_lower = strtolower($day);
+    ?>
+    <div class="airos-day-schedule">
+        <label>
+            <input type="checkbox" name="airos_settings[airos_live_chat_schedule][<?php echo $day_lower; ?>][all_day]" value="1" <?php checked(isset($options['airos_live_chat_schedule'][$day_lower]['all_day']) ? $options['airos_live_chat_schedule'][$day_lower]['all_day'] : 0, 1); ?>>
+            All Day
+        </label>
+        <label><?php echo $day; ?> Start Time:</label>
+        <input type="time" name="airos_settings[airos_live_chat_schedule][<?php echo $day_lower; ?>][start_time]" value="<?php echo esc_attr($options['airos_live_chat_schedule'][$day_lower]['start_time'] ?? ''); ?>">
+        <label><?php echo $day; ?> End Time:</label>
+        <input type="time" name="airos_settings[airos_live_chat_schedule][<?php echo $day_lower; ?>][end_time]" value="<?php echo esc_attr($options['airos_live_chat_schedule'][$day_lower]['end_time'] ?? ''); ?>">
+    </div>
+    <?php
+}
+
+function airos_live_chat_timezone_render() {
+    $options = get_option('airos_settings');
+    $common_timezones = [
+        'America/Los_Angeles' => 'Pacific Time (US & Canada)',
+        'America/Denver' => 'Mountain Time (US & Canada)',
+        'America/Chicago' => 'Central Time (US & Canada)',
+        'America/New_York' => 'Eastern Time (US & Canada)',
+        'America/Halifax' => 'Atlantic Time (Canada)',
+        'America/St_Johns' => 'Newfoundland Time',
+        'America/Anchorage' => 'Alaska Time',
+        'America/Adak' => 'Hawaii-Aleutian Time',
+        'GMT' => 'Greenwich Mean Time',
+        'CET' => 'Central European Time',
+        'EET' => 'Eastern European Time',
+        'Australia/Sydney' => 'Australian Eastern Time',
+        'Australia/Adelaide' => 'Australian Central Time'
+    ];
+    ?>
+    <label for="airos_live_chat_timezone">Select Timezone:</label>
+    <select name="airos_settings[airos_live_chat_timezone]" id="airos_live_chat_timezone">
+        <?php foreach ($common_timezones as $timezone => $label) : ?>
+            <option value="<?php echo $timezone; ?>" <?php selected($options['airos_live_chat_timezone'] ?? '', $timezone); ?>><?php echo $label; ?></option>
+        <?php endforeach; ?>
+    </select>
+    <?php
+}
+
+
 function airos_options_page() {
     include plugin_dir_path(__FILE__) . 'admin-page-template.php';
 }
@@ -273,10 +341,23 @@ function airos_live_chat_button() {
         $liveChatFontColor = isset($options['airos_live_chat_font_color']) ? $options['airos_live_chat_font_color'] : '#ffffff';
         $liveChatButtonType = isset($options['airos_live_chat_button_type']) ? $options['airos_live_chat_button_type'] : 'text';
         $liveChatText = isset($options['airos_live_chat_text']) ? $options['airos_live_chat_text'] : 'Chat';
-        $liveChatIconWidth = isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '40';
-        $liveChatIconHeight = isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '40';
-        
-        if ($liveChatUrl) {
+        $liveChatIconWidth = isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '20';
+        $liveChatIconHeight = isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '20';
+        $timezone = isset($options['airos_live_chat_timezone']) ? $options['airos_live_chat_timezone'] : 'UTC';
+
+        // Set the timezone
+        date_default_timezone_set($timezone);
+
+        // Get current time and day based on selected timezone
+        $currentDay = strtolower(date('l'));
+        $currentTime = date('H:i');
+        $allDay = isset($options['airos_live_chat_schedule'][$currentDay]['all_day']) ? $options['airos_live_chat_schedule'][$currentDay]['all_day'] : 0;
+        $startTime = $options['airos_live_chat_schedule'][$currentDay]['start_time'] ?? '';
+        $endTime = $options['airos_live_chat_schedule'][$currentDay]['end_time'] ?? '';
+
+        $isScheduledTime = $allDay || ($currentTime >= $startTime && $currentTime <= $endTime);
+
+        if ($liveChatUrl && $isScheduledTime) {
             if ($liveChatButtonType === 'icon') {
                 ?>
                 <button id="airos-live-chat-button-icon" style="color: <?php echo esc_attr($liveChatFontColor); ?>;">
@@ -300,6 +381,7 @@ function airos_live_chat_button() {
         }
     }
 }
+
 
 
 add_action('wp_footer', 'airos_live_chat_button');
