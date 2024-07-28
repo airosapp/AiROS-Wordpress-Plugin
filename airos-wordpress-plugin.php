@@ -127,7 +127,25 @@ function airos_settings_init() {
         'airosApp',
         'airos_section_live_chat'
     );
+
+    // New fields for icon height and width
+    add_settings_field(
+        'airos_live_chat_icon_width',
+        __('Live Chat Icon Width (px)', 'wordpress'),
+        'airos_live_chat_icon_width_render',
+        'airosApp',
+        'airos_section_live_chat'
+    );
+
+    add_settings_field(
+        'airos_live_chat_icon_height',
+        __('Live Chat Icon Height (px)', 'wordpress'),
+        'airos_live_chat_icon_height_render',
+        'airosApp',
+        'airos_section_live_chat'
+    );
 }
+
 
 function airos_settings_section_callback_general() {
     echo __('General settings for the AiROS App.', 'wordpress');
@@ -141,6 +159,20 @@ function airos_live_chat_enabled_render() {
     $options = get_option('airos_settings');
     ?>
     <input type='checkbox' style='transform: scale(1.5);' name='airos_settings[airos_live_chat_enabled]' <?php checked(isset($options['airos_live_chat_enabled']) ? $options['airos_live_chat_enabled'] : 0, 1); ?> value='1'>
+    <?php
+}
+
+function airos_live_chat_icon_width_render() {
+    $options = get_option('airos_settings');
+    ?>
+    <input type='number' name='airos_settings[airos_live_chat_icon_width]' value='<?php echo isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '20'; ?>' style='background: white; width: 60px;' min='10' max='100'>
+    <?php
+}
+
+function airos_live_chat_icon_height_render() {
+    $options = get_option('airos_settings');
+    ?>
+    <input type='number' name='airos_settings[airos_live_chat_icon_height]' value='<?php echo isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '20'; ?>' style='background: white; width: 60px;' min='10' max='100'>
     <?php
 }
 
@@ -231,6 +263,7 @@ function airos_enqueue_live_chat_scripts() {
 add_action('wp_enqueue_scripts', 'airos_enqueue_live_chat_scripts');
 
 // Add HTML for the Floating Button and Modal
+
 function airos_live_chat_button() {
     $options = get_option('airos_settings');
     if (isset($options['airos_live_chat_enabled']) && $options['airos_live_chat_enabled'] == 1) {
@@ -239,13 +272,15 @@ function airos_live_chat_button() {
         $liveChatFontColor = isset($options['airos_live_chat_font_color']) ? $options['airos_live_chat_font_color'] : '#ffffff';
         $liveChatButtonType = isset($options['airos_live_chat_button_type']) ? $options['airos_live_chat_button_type'] : 'text';
         $liveChatText = isset($options['airos_live_chat_text']) ? $options['airos_live_chat_text'] : 'Chat';
+        $liveChatIconWidth = isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '20';
+        $liveChatIconHeight = isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '20';
         
         if ($liveChatUrl) {
             if ($liveChatButtonType === 'icon') {
                 ?>
                 <button id="airos-live-chat-button-icon" style="color: <?php echo esc_attr($liveChatFontColor); ?>;">
-                    <img src="<?php echo plugin_dir_url(__FILE__); ?>assets/images/live-chat-icon.png" alt="Chat Icon" style="width: 20px; height: 20px;" class="chat-icon">
-                    <span class="chat-close" style="display: none;">X</span>
+                    <img src="<?php echo plugin_dir_url(__FILE__) . 'assets/images/live-chat-icon.png'; ?>" alt="Chat Icon" style="width: <?php echo $liveChatIconWidth; ?>px; height: <?php echo $liveChatIconHeight; ?>px;" class="chat-icon">
+                    <span class="chat-close" style="display: none; width: <?php echo $liveChatIconWidth; ?>px; height: <?php echo $liveChatIconHeight; ?>px; line-height: <?php echo $liveChatIconHeight; ?>px; text-align: center;">X</span>
                 </button>
                 <?php
             } else {
@@ -264,5 +299,7 @@ function airos_live_chat_button() {
         }
     }
 }
+
+
 add_action('wp_footer', 'airos_live_chat_button');
 ?>
