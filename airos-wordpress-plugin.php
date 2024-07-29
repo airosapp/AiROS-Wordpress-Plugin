@@ -156,6 +156,7 @@ function airos_settings_init() {
             'airos_section_live_chat',
             ['day' => $day]
         );
+	    }
 
     // Timezone field
     add_settings_field(
