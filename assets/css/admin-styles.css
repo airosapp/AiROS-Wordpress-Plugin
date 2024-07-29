@@ -27,7 +27,7 @@
 }
 
 input[type="checkbox"] {
-    transform: scale(2.5);
+    transform: scale(2);
     margin-right: 10px;
 }
 
@@ -39,4 +39,52 @@ input[type="text"], textarea {
     width: 100%;
     box-sizing: border-box;
     margin-bottom: 20px;
+}
+
+.airos-day-schedule {
+    margin-bottom: 20px;
+}
+
+.day-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.all-day-container {
+    display: flex;
+    align-items: center;
+}
+
+.all-day-container input {
+    width: 15px;
+    height: 15px;
+    margin-right: 15px;
+}
+
+.day-time-inputs-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.day-time-inputs {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.day-time-group {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-bottom: 10px;
+}
+
+.day-time-group label {
+    margin-right: 10px;
+}
+
+/* Hide the entire wrapper if "All Day" is checked */
+.all-day-checkbox:checked ~ .day-time-inputs-wrapper {
+    display: none;
 }
