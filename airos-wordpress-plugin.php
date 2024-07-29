@@ -244,17 +244,28 @@ function airos_live_chat_schedule_render($args) {
     $day_lower = strtolower($day);
     ?>
     <div class="airos-day-schedule">
-        <label>
-            <input type="checkbox" name="airos_settings[airos_live_chat_schedule][<?php echo $day_lower; ?>][all_day]" value="1" <?php checked(isset($options['airos_live_chat_schedule'][$day_lower]['all_day']) ? $options['airos_live_chat_schedule'][$day_lower]['all_day'] : 0, 1); ?>>
-            All Day
-        </label>
-        <label><?php echo $day; ?> Start Time:</label>
-        <input type="time" name="airos_settings[airos_live_chat_schedule][<?php echo $day_lower; ?>][start_time]" value="<?php echo esc_attr($options['airos_live_chat_schedule'][$day_lower]['start_time'] ?? ''); ?>">
-        <label><?php echo $day; ?> End Time:</label>
-        <input type="time" name="airos_settings[airos_live_chat_schedule][<?php echo $day_lower; ?>][end_time]" value="<?php echo esc_attr($options['airos_live_chat_schedule'][$day_lower]['end_time'] ?? ''); ?>">
+        <div class="day-header">
+            <label class="all-day-container">
+                <input type="checkbox" class="all-day-checkbox" name="airos_settings[airos_live_chat_schedule][<?php echo $day_lower; ?>][all_day]" value="1" <?php checked(isset($options['airos_live_chat_schedule'][$day_lower]['all_day']) ? $options['airos_live_chat_schedule'][$day_lower]['all_day'] : 0, 1); ?>>
+                <span class="allday">All Day</span>
+            </label>
+        </div>
+        <div class="day-time-inputs-wrapper">
+            <div class="day-time-inputs">
+                <div class="day-time-group">
+                    <label><?php echo $day; ?> Start Time:</label>
+                    <input type="time" class="day-time-input" name="airos_settings[airos_live_chat_schedule][<?php echo $day_lower; ?>][start_time]" value="<?php echo esc_attr($options['airos_live_chat_schedule'][$day_lower]['start_time'] ?? ''); ?>">
+                </div>
+                <div class="day-time-group">
+                    <label><?php echo $day; ?> End Time:</label>
+                    <input type="time" class="day-time-input" name="airos_settings[airos_live_chat_schedule][<?php echo $day_lower; ?>][end_time]" value="<?php echo esc_attr($options['airos_live_chat_schedule'][$day_lower]['end_time'] ?? ''); ?>">
+                </div>
+            </div>
+        </div>
     </div>
     <?php
 }
+
 
 function airos_live_chat_timezone_render() {
     $options = get_option('airos_settings');
@@ -341,8 +352,8 @@ function airos_live_chat_button() {
         $liveChatFontColor = isset($options['airos_live_chat_font_color']) ? $options['airos_live_chat_font_color'] : '#ffffff';
         $liveChatButtonType = isset($options['airos_live_chat_button_type']) ? $options['airos_live_chat_button_type'] : 'text';
         $liveChatText = isset($options['airos_live_chat_text']) ? $options['airos_live_chat_text'] : 'Chat';
-        $liveChatIconWidth = isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '20';
-        $liveChatIconHeight = isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '20';
+        $liveChatIconWidth = isset($options['airos_live_chat_icon_width']) ? esc_attr($options['airos_live_chat_icon_width']) : '40';
+        $liveChatIconHeight = isset($options['airos_live_chat_icon_height']) ? esc_attr($options['airos_live_chat_icon_height']) : '40';
         $timezone = isset($options['airos_live_chat_timezone']) ? $options['airos_live_chat_timezone'] : 'UTC';
 
         // Set the timezone
@@ -386,3 +397,28 @@ function airos_live_chat_button() {
 
 add_action('wp_footer', 'airos_live_chat_button');
 ?>
+
+<!-- Add JavaScript for handling 'All Day' checkbox -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function toggleTimeInputs(checkbox) {
+        var dayTimeInputsWrapper = checkbox.closest('.airos-day-schedule').querySelector('.day-time-inputs-wrapper');
+        if (checkbox.checked) {
+            dayTimeInputsWrapper.style.display = 'none';
+        } else {
+            dayTimeInputsWrapper.style.display = 'flex';
+        }
+    }
+
+    var checkboxes = document.querySelectorAll('.all-day-checkbox');
+    checkboxes.forEach(function(checkbox) {
+        // Initial toggle based on current state
+        toggleTimeInputs(checkbox);
+
+        // Attach change event listener
+        checkbox.addEventListener('change', function() {
+            toggleTimeInputs(checkbox);
+        });
+    });
+});
+</script>
