@@ -60,7 +60,6 @@
 
 /* Styles for when the modal is open */
 #airos-live-chat-modal {
-    display: none;
     position: fixed;
     bottom: 80px;
     right: 20px;
