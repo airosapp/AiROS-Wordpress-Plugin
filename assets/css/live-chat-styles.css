@@ -66,7 +66,7 @@
     max-width: 500px;
     height: 500px;
     width: 100%;
-    background: #fff;
+    background: transparent;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     z-index: 10000;
     transform: translateY(0);
