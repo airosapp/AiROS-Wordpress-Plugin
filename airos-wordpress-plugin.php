@@ -96,7 +96,7 @@ function airos_settings_init() {
         'airos_section_live_chat'
     );
 
-        add_settings_field(
+    add_settings_field(
         'airos_live_chat_button_type',
         __('Live Chat Button Type', 'wordpress'),
         'airos_live_chat_button_type_render',
@@ -146,7 +146,6 @@ function airos_settings_init() {
     );
 
 }
-
 
 function airos_settings_section_callback_general() {
     echo __('General settings for the AiROS App.', 'wordpress');
@@ -240,8 +239,9 @@ function airos_admin_scripts($hook) {
 
 // Enqueue front-end scripts and styles
 function airos_enqueue_live_chat_scripts() {
-    // Enqueue Bootstrap CSS
-    wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+    // Removed Bootstrap CSS and JS enqueues
+    // wp_enqueue_style('bootstrap-css', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+    // wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array('jquery'), null, true);
 
     // Correct CSS path
     $css_file_url = plugin_dir_url(__FILE__) . 'assets/css/live-chat-styles.css';
@@ -253,9 +253,6 @@ function airos_enqueue_live_chat_scripts() {
 
     // Make sure jQuery is enqueued
     wp_enqueue_script('jquery');
-
-    // Enqueue Bootstrap JS with jQuery as a dependency
-    wp_enqueue_script('bootstrap-js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', array('jquery'), null, true);
 
     // Enqueue custom live chat script with jQuery as a dependency
     wp_register_script('airos_live_chat_script', plugin_dir_url(__FILE__) . 'assets/js/live-chat-script.js', array('jquery'), filemtime(plugin_dir_path(__FILE__) . 'assets/js/live-chat-script.js'), true);
@@ -279,28 +276,28 @@ function airos_live_chat_button() {
         if ($liveChatUrl) {
             if ($liveChatButtonType === 'icon') {
                 ?>
-                <button id="airos-live-chat-button-icon" style="color: <?php echo esc_attr($liveChatFontColor); ?>;">
+                <button id="airos-live-chat-button-icon" class="airos-chat-button-icon" style="color: <?php echo esc_attr($liveChatFontColor); ?>;">
                     <img src="<?php echo plugin_dir_url(__FILE__) . 'assets/images/live-chat-icon.png'; ?>" alt="Chat Icon" style="width: <?php echo $liveChatIconWidth; ?>px; height: <?php echo $liveChatIconHeight; ?>px;" class="chat-icon">
                     <span class="chat-close" style="display: none; width: <?php echo $liveChatIconWidth; ?>px; height: <?php echo $liveChatIconHeight; ?>px; line-height: <?php echo $liveChatIconHeight; ?>px; text-align: center;">X</span>
                 </button>
                 <?php
             } else {
                 ?>
-                <button id="airos-live-chat-button-text" style="background-color: <?php echo esc_attr($liveChatColor); ?>; color: <?php echo esc_attr($liveChatFontColor); ?>;">
+                <button id="airos-live-chat-button-text" class="airos-chat-button-text" style="background-color: <?php echo esc_attr($liveChatColor); ?>; color: <?php echo esc_attr($liveChatFontColor); ?>;">
                     <span class="chat-text"><?php echo esc_html($liveChatText); ?></span>
                     <span class="chat-close" style="display: none;">X</span>
                 </button>
                 <?php
             }
             ?>
-            <div id="airos-live-chat-modal">
-                <iframe src="<?php echo esc_url($liveChatUrl); ?>" width="500" height="500" allow="camera; microphone; autoplay"></iframe>
+            <div id="airos-live-chat-modal" class="airos-modal">
+                <iframe src="<?php echo esc_url($liveChatUrl); ?>" allow="camera; microphone; autoplay"></iframe>
+                <span class="airos-modal-close">&times;</span>
             </div>
             <?php
         }
     }
 }
-
 
 add_action('wp_footer', 'airos_live_chat_button');
 ?>
