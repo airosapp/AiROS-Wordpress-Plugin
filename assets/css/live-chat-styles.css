@@ -1,42 +1,55 @@
-/* General styles for the live chat button */
-#airos-live-chat-button-icon, #airos-live-chat-button-text {
+/* live-chat-styles.css */
+
+/* General styles for the live chat buttons */
+.airos-chat-button-icon,
+.airos-chat-button-text {
     position: fixed;
     bottom: 20px;
     right: 20px;
     border: none;
     outline: none; /* Remove default focus outline */
-    border-radius: 8px;
     cursor: pointer;
     z-index: 1000;
     transition: background-color 0.3s, color 0.3s, transform 0.3s;
-	background: transparent;
+    background: transparent;
 }
 
 /* Styles for the text option button */
-#airos-live-chat-button-text {
+.airos-chat-button-text {
     padding: 10px 20px;
+    border-radius: 5px;
+    background-color: inherit; /* Button background color */
+    color: inherit; /* Button text color */
 }
 
-/* Styles specifically for the text option */
-#airos-live-chat-button-text .chat-text {
-    background-color: inherit; /* Inherit the button's background color */
-    color: inherit; /* Inherit the button's text color */
+/* Styles specifically for the text inside the text button */
+.airos-chat-button-text .chat-text {
+    background-color: inherit;
+    color: inherit;
 }
 
 /* Styles for the icon option button */
-#airos-live-chat-button-icon .chat-icon {
+.airos-chat-button-icon .chat-icon {
     width: 50px;
     height: 50px;
-    padding: 0px;
+    padding: 0;
 }
 
-/* Styles for the active state of the text option */
-#airos-live-chat-button-text.active {
-    background-color: #ff0000; /* Change this color to what you prefer for the active state */
+/* Hide the close text initially */
+.airos-chat-button-icon .chat-close,
+.airos-chat-button-text .chat-close {
+    font-size: 20px;
+    font-weight: bold;
+    display: none;
 }
 
-/* Styles for the black circle with 'X' when chat is open */
-#airos-live-chat-button-icon.active .chat-close {
+/* Styles for the active state of the text button */
+.airos-chat-button-text.active {
+    background-color: #ff0000; /* Change this color for the active state */
+}
+
+/* Styles for the 'X' when the chat is open in icon mode */
+.airos-chat-button-icon.active .chat-close {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,17 +62,20 @@
     font-weight: bold;
 }
 
-#airos-live-chat-button-text.active .chat-close {
+/* Display the close text when chat is open in text mode */
+.airos-chat-button-text.active .chat-close {
     display: inline;
 }
 
-#airos-live-chat-button-icon.active .chat-icon,
-#airos-live-chat-button-text.active .chat-text {
+/* Hide the chat icon or text when active */
+.airos-chat-button-icon.active .chat-icon,
+.airos-chat-button-text.active .chat-text {
     display: none;
 }
 
-/* Styles for when the modal is open */
-#airos-live-chat-modal {
+/* Styles for the modal */
+.airos-modal {
+    display: none; /* Hidden by default */
     position: fixed;
     bottom: 80px;
     right: 20px;
@@ -68,15 +84,41 @@
     width: 100%;
     background: transparent;
     z-index: 10000;
-    transform: translateY(0);
     transition: opacity 0.3s ease-in-out, visibility 0s linear 0.3s;
     opacity: 0;
     visibility: hidden;
 }
 
+/* Styles when the modal is open */
+.airos-modal.open {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease-in-out, visibility 0s linear 0s;
+}
+
+/* Styles for the iframe inside the modal */
+.airos-modal iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Close button inside the modal */
+.airos-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 10001;
+}
+
 /* Media query for screens smaller than 500px */
 @media (max-width: 500px) {
-    #airos-live-chat-modal {
+    .airos-modal {
         width: 90vw; /* Use viewport width units for scaling */
         height: 80vh; /* Use viewport height units for scaling */
         left: 5%; /* Position from the left instead of right */
@@ -85,30 +127,7 @@
         max-height: 70vh; /* Limit max-height to avoid overflow */
         margin: 0;
         padding: 0;
-        z-index: 10000;
         box-sizing: border-box; /* Include padding and border in width/height */
-        overflow: hidden; /* Prevents content overflow */
+        overflow: hidden; /* Prevent content overflow */
     }
-
-
-#airos-live-chat-modal.open {
-    display: block;
-    transform: translateY(0);
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease-in-out, visibility 0s linear 0s;
 }
-
-#airos-live-chat-modal iframe {
-    width: 100%;
-    height: 100%;
-}
-
-/* Hide the close text initially */
-#airos-live-chat-button-icon .chat-close,
-#airos-live-chat-button-text .chat-close {
-    font-size: 20px;
-    font-weight: bold;
-    display: none;
-}
-
