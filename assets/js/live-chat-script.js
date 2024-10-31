@@ -1,6 +1,9 @@
 // JavaScript to handle the live chat button click
 jQuery(document).ready(function($) {
-    $('#airos-live-chat-button-icon, #airos-live-chat-button-text').click(function() {
+    $('#airos-live-chat-button-icon, #airos-live-chat-button-text').click(function(event) {
+        event.preventDefault();    // Prevents the default action (if necessary)
+        event.stopPropagation();   // Stops the event from bubbling up the DOM tree
+
         var $modal = $('#airos-live-chat-modal');
         var $button = $(this);
         var $icon = $button.find('.chat-icon');
