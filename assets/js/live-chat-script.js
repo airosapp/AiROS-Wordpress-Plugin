@@ -1,34 +1,67 @@
-// JavaScript to handle the live chat button click
-jQuery(document).ready(function($) {
-    $('#airos-live-chat-button-icon, #airos-live-chat-button-text').click(function(event) {
-        event.preventDefault();    // Prevents the default action (if necessary)
-        event.stopPropagation();   // Stops the event from bubbling up the DOM tree
+// live-chat-script.js
 
-        var $modal = $('#airos-live-chat-modal');
-        var $button = $(this);
-        var $icon = $button.find('.chat-icon');
-        var $text = $button.find('.chat-text');
-        var $close = $button.find('.chat-close');
+(function($) {
+    $(document).ready(function() {
+        // Open modal when button is clicked
+        $('.airos-chat-button-icon, .airos-chat-button-text').on('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation(); // Prevent event bubbling
 
-        $modal.toggleClass('open');
-        $button.toggleClass('active');
+            var $modal = $('.airos-modal');
+            var $button = $(this);
+            var $icon = $button.find('.chat-icon');
+            var $text = $button.find('.chat-text');
+            var $close = $button.find('.chat-close');
 
-        if ($modal.hasClass('open')) {
-            $icon.hide();
-            $text.hide();
-            $close.css('display', 'flex'); // Show the close button as a flexbox item
-            $modal.css({
-                'opacity': '1',
-                'visibility': 'visible'
-            });
-        } else {
+            $modal.toggleClass('open');
+            $button.toggleClass('active');
+
+            if ($modal.hasClass('open')) {
+                $icon.hide();
+                $text.hide();
+                $close.show();
+            } else {
+                $icon.show();
+                $text.show();
+                $close.hide();
+            }
+        });
+
+        // Close modal when 'X' is clicked inside the modal
+        $('.airos-modal-close').on('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation(); // Prevent event bubbling
+
+            var $modal = $(this).closest('.airos-modal');
+            var $button = $('.airos-chat-button-icon.active, .airos-chat-button-text.active');
+            var $icon = $button.find('.chat-icon');
+            var $text = $button.find('.chat-text');
+            var $close = $button.find('.chat-close');
+
+            $modal.removeClass('open');
+            $button.removeClass('active');
+
             $icon.show();
             $text.show();
             $close.hide();
-            $modal.css({
-                'opacity': '0',
-                'visibility': 'hidden'
-            });
-        }
+        });
+
+        // Close modal when clicking outside the modal content
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('.airos-modal iframe, .airos-chat-button-icon, .airos-chat-button-text').length) {
+                var $modal = $('.airos-modal.open');
+                var $button = $('.airos-chat-button-icon.active, .airos-chat-button-text.active');
+                var $icon = $button.find('.chat-icon');
+                var $text = $button.find('.chat-text');
+                var $close = $button.find('.chat-close');
+
+                $modal.removeClass('open');
+                $button.removeClass('active');
+
+                $icon.show();
+                $text.show();
+                $close.hide();
+            }
+        });
     });
-});
+})(jQuery);
